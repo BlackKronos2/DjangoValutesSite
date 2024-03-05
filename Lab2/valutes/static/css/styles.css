@@ -1,0 +1,19 @@
+.button {
+  background-color: #007bff; /* Синий фон */
+  border: none; /* Убираем границу */
+  color: white; /* Белый текст */
+  padding: 10px 20px; /* Внутренние отступы */
+  text-align: center; /* Центрирование текста */
+  text-decoration: none; /* Убираем подчеркивание */
+  display: inline-block; /* Позволяет задать размеры */
+  font-size: 16px; /* Размер шрифта */
+  margin: 4px 2px; /* Внешние отступы */
+  cursor: pointer; /* Курсор в виде указателя */
+  border-radius: 5px; /* Скругление углов */
+  transition: background-color 0.3s, box-shadow 0.3s; /* Анимация для плавности */
+}
+
+.button:hover {
+  background-color: #ff4d4d; /* Темно-синий фон при наведении */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Тень при наведении */
+}

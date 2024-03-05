@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Моя страница</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #0056b3; /* Темно-синий фон */
+    font-family: Arial, sans-serif;
+    color: white;
+    display: flex;
+    justify-content: space-between; /* Равномерное распределение элементов по ширине */
+  }
+  .sidebar {
+    background-color: #007bff; /* Синий фон для панелей */
+    padding: 2vh;
+    height: 90vh; /* Высота на 90% высоты окна браузера */
+    border-radius: 15px; /* Круглые углы */
+  }
+  .left-panel {
+    width: 20%; /* Ширина на 20% ширины окна браузера */
+    margin-left: 0.5%; /* Добавляем отступ справа */
+    margin-top: 0.5%;
+  }
+  .right-panel {
+    width: 78%; /* Ширина на 78% ширины окна браузера */
+    margin-left: 0.5%; /* Добавляем отступ слева */
+    margin-right: 0.5%; /* Добавляем отступ справа */
+    margin-top: 0.5%;
+  }
+  .middle-panel {
+    background-color: #ffffff;
+    margin: 2vh 0;
+    padding: 2vh;
+    color: black;
+    border-radius: 15px; /* Круглые углы */
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .top-bar {
+    background-color: #0069d9;
+    color: white;
+    padding: 1vh;
+    border-radius: 15px; /* Круглые углы */
+  }
+  .top-bar a, .top-bar a:link, .top-bar a:visited {
+    color: white;
+    text-decoration: none;
+  }
+  .top-bar a:hover {
+    color: #b3d4fc; /* Светло-синий цвет при наведении */
+  }
+  .button {
+    display: block;
+    width: 100%;
+    margin: 2vh 0;
+    padding: 2vh;
+    background-color: #007bff;
+    color: white;
+    border: 2px solid white; /* Белая граница */
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+    border-radius: 50px; /* Круглые кнопки */
+  }
+  .button:hover {
+    background-color: #0056b3;
+  }
+  .footer {
+    background-color: #343a40;
+    color: white;
+    text-align: left; /* Выравнивание текста слева */
+    padding: 1vh;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  .footer a, .footer a:link, .footer a:visited {
+    color: white;
+    text-decoration: none;
+  }
+  .footer a:hover {
+    color: #ccc; /* Светло-серый цвет при наведении */
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 2vh;
+    border: 1px solid #ddd;
+  }
+  th {
+    background-color: #007bff;
+    color: white;
+  }
+  tr:nth-child(even) {background-color: #f2f2f2;}
+  .search-panel, .share-panel {
+    margin-bottom: 2vh;
+    padding: 2vh;
+    background-color: #e9ecef;
+    color: black;
+    border-radius: 15px; /* Круглые углы */
+  }
+  .input-field {
+    margin: 0 1vw 0 0;
+    padding: 1vh;
+  }
+  .share-link {
+    color: #007bff;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="sidebar left-panel">
+  <div class="handwritten">Мои кнопки</div>
+  <button class="button">Кнопка 1</button>
+  <button class="button">Кнопка 2</button>
+  <button class="button">Кнопка 3</button>
+</div>
+
+<div class="sidebar right-panel">
+  <div class="top-bar">
+    <a href="#">Ссылка 1</a>
+    <a href="#">Ссылка 2</a>
+    <a href="#">Ссылка 3</a>
+  </div>
+  <div class="middle-panel">
+    <!-- Панель поиска -->
+    <div class="search-panel">
+      <input type="text" class="input-field" placeholder="" readonly> =
+      <input type="text" class="input-field" placeholder="" readonly>
+    </div>
+
+    <!-- Панель для деления ссылки -->
+    <div class="share-panel">
+      Поделитесь ссылкой: <a href="#" class="share-link">https://example.com</a>
+    </div>
+
+    <!-- Таблица внутри средней панели -->
+    <table>
+      <tr>
+        <th>Заголовок 1</th>
+        <th>Заголовок 2</th>
+        <th>Заголовок 3</th>
+      </tr>
+      <tr>
+        <td>Данные 1</td>
+        <td>Данные 2</td>
+        <td>Данные 3</td>
+      </tr>
+      <tr>
+        <td>Данные A</td>
+        <td>Данные B</td>
+        <td>Данные C</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  © 2021 Компания Инк. | <a href="#">О сайте</a> | <a href="#">О компании</a> | <a href="#">Контакты</a>
+</div>
+
+</body>
+</html>

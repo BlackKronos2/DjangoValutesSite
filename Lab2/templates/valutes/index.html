@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Сайт курсы валют.</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+  </head>
+  <body>
+    <h1>Добро пожаловать на мою страницу!</h1>
+    <h1>Тут можно получить актуальные и архивные данные о курсе валют!</h1>
+    <h1>Данные собраны с официального сайта ЦБ РФ!</h1>
+
+     <div class="button-container">
+      <a class="button" href="/current-exchange-rate">Актуальный курс USD</a>
+      <a class="button" href="/exchange-rate">Архивный курс валют</a>
+      <a class="button" href="/about">О сайте</a>
+      <a class="button" href="/blog">Новости</a>
+    </div>
+  </body>
+</html>
