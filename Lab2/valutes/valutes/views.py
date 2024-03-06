@@ -7,9 +7,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 
-def index(request):
-    #return render(request, 'valutes/index.html')
-    return render(request, 'valutes/main.html')
+def page_from_name(request, file_name):
+    return render(request, file_name + '.html', {})
 
 
 def custom_404(request, exception):
@@ -41,10 +40,6 @@ def archive_year(request, year):
     except ValueError as e:
         # Обработка случая с некорректным годом
         return HttpResponse(f'Ошибка: {e}', status=400)
-
-def dynamic(request):
-    return render(request, 'valutes/about.html')
-
 
 def get_exchange_rate(request):
     if request.method == 'GET':

@@ -33,6 +33,9 @@ def archive_year(request, year):
     try:
         # Проверка, что год находится в разумном диапазоне
         year = int(year)
+        if year == 2024:
+            return current_exchange_rate(request)
+
         if year < 2000 or year > 2023:
             raise ValueError("Год находится вне допустимого диапазона.")
         # Здесь может быть логика обработки корректного года

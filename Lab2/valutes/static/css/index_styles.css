@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Моя страница</title>
-<style>
-  body {
+body {
     margin: 0;
     padding: 0;
     background-color: #0056b3; /* Темно-синий фон */
@@ -49,6 +42,10 @@
   .top-bar a, .top-bar a:link, .top-bar a:visited {
     color: white;
     text-decoration: none;
+    margin-right: 10px; /* Добавляем отступ справа между ссылками */
+  }
+  .top-bar a:last-child {
+    margin-right: 0; /* Убираем отступ у последней ссылки */
   }
   .top-bar a:hover {
     color: #b3d4fc; /* Светло-синий цвет при наведении */
@@ -91,7 +88,7 @@
   }
   th, td {
     padding: 2vh;
-    border: 1px solid #ddd;
+    border: none; /* Границы убраны */
   }
   th {
     background-color: #007bff;
@@ -113,59 +110,14 @@
     color: #007bff;
     text-decoration: none;
   }
-</style>
-</head>
-<body>
-
-<div class="sidebar left-panel">
-  <div class="handwritten">Мои кнопки</div>
-  <button class="button">Кнопка 1</button>
-  <button class="button">Кнопка 2</button>
-  <button class="button">Кнопка 3</button>
-</div>
-
-<div class="sidebar right-panel">
-  <div class="top-bar">
-    <a href="#">Ссылка 1</a>
-    <a href="#">Ссылка 2</a>
-    <a href="#">Ссылка 3</a>
-  </div>
-  <div class="middle-panel">
-    <!-- Панель поиска -->
-    <div class="search-panel">
-      <input type="text" class="input-field" placeholder="" readonly> =
-      <input type="text" class="input-field" placeholder="" readonly>
-    </div>
-
-    <!-- Панель для деления ссылки -->
-    <div class="share-panel">
-      Поделитесь ссылкой: <a href="#" class="share-link">https://example.com</a>
-    </div>
-
-    <!-- Таблица внутри средней панели -->
-    <table>
-      <tr>
-        <th>Заголовок 1</th>
-        <th>Заголовок 2</th>
-        <th>Заголовок 3</th>
-      </tr>
-      <tr>
-        <td>Данные 1</td>
-        <td>Данные 2</td>
-        <td>Данные 3</td>
-      </tr>
-      <tr>
-        <td>Данные A</td>
-        <td>Данные B</td>
-        <td>Данные C</td>
-      </tr>
-    </table>
-  </div>
-</div>
-
-<div class="footer">
-  © 2021 Компания Инк. | <a href="#">О сайте</a> | <a href="#">О компании</a> | <a href="#">Контакты</a>
-</div>
-
-</body>
-</html>
+  .faq-header {
+    text-align: center;
+  }
+  dt {
+      font-weight: bold;
+      margin-top: 20px;
+  }
+  dd {
+      margin-bottom: 20px;
+      margin-left: 0;
+  }

@@ -1,7 +1,10 @@
-<!-- exchange_rate_result.html -->
-<h2>Курс валют на момент {{ date }}:</h2>
-<ul>
-  {% for name, rate in exchange_rates.items %}
-    <li>{{ name }}: {{ rate }}</li>
-  {% endfor %}
-</ul>
+{% extends "base/index_base.html" %}
+
+{% block content %}
+  <h2>Курс валют на момент {{ date }}:</h2>
+  <ul>
+    {% for name, rate in exchange_rates.items %}
+      <li>{{ name }}: {{ rate }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

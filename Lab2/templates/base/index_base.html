@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Моя страница {% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index_styles.css' %}">
+  </head>
+<body>
+
+  <div class="sidebar left-panel">
+    <div class="handwritten">Выбор валют</div>
+    <button class="button">Рубль</button>
+    <button class="button">Доллар США</button>
+    <button class="button">Китайский юань</button>
+  </div>
+
+  <div class="sidebar right-panel">
+    <div class="top-bar">
+      <a href="/blog">Важные новости</a>
+      <a href="/current-exchange-rate">Актуальный курс</a>
+      <a href="/exchange-rate">Архив</a>
+      <a href="/faq">FAQ</a>
+    </div>
+    <div class="middle-panel">
+      <!-- Панель -->
+      {% block content %}
+
+      {% endblock %}
+    </div>
+  </div>
+
+  <div class="footer">
+    © 2021 Компания Инк. | <a href="/about_site">О сайте</a> | <a href="/about_company">О компании</a> | <a href="#">Контакты</a>
+  </div>
+
+</body>
+</html>

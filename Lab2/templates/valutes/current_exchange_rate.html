@@ -1,3 +1,8 @@
-<!-- current_exchange_rate.html -->
-<h1>Текущий курс обмена:</h1>
-<p>1 USD = {{ rate }} рублей</p>
+{% extends "base/index_base.html" %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+    <h1>Текущий курс обмена:</h1>
+    <p>1 USD = {{ rate }} рублей</p>
+{% endblock %}

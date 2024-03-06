@@ -9,5 +9,6 @@ from django.shortcuts import render
 
 # Create your views here.
 
-def index(request):
-    return render(request, 'valutesBlog/index.html')
+def page_from_name(request, file_name):
+    return render(request, file_name + '.html', {})
+
