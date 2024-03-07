@@ -30,7 +30,7 @@ def current_exchange_rate(request, valute_code):
     response = requests.get('https://www.cbr-xml-daily.ru/daily_json.js')
     data = response.json()
     rate = data['Valute'][valute_code]['Value']
-    return render(request, 'valutes/current_exchange_rate.html', {'rate': rate})
+    return render(request, 'valutes/current_exchange_rate.html', {'rate': rate, 'valute_code':valute_code})
 
 def archive_year(request, year):
     try:
