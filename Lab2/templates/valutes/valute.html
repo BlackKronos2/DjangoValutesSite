@@ -1,0 +1,56 @@
+{% extends "base/index_base.html" %}
+
+{% block title %}Главная страница{% endblock %}
+
+
+{% block contents_menu %}
+    <a href="/blog">Важные новости</a>
+    <a href="/current-exchange-rate/{{ valute_code }}/">Актуальный курс</a>
+    <a href="/exchange-rate/{{ valute_code }}/">Архив</a>
+{% endblock %}
+
+{% block content %}
+
+    <!-- Панель с элементами курса -->
+    <div class="currency-panel" style="margin-bottom: 20px;">
+        <input type="text" value="1">
+        <span>=</span>
+        <span>{{ valute_code }}</span>
+        <input type="text" value="27.500" readonly>
+        <span> руб.</span>
+    </div>
+
+    <!-- Таблица внутри средней панели -->
+    <table style="margin-top: 20px;">
+      <tr>
+        <th>Валюта</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      <tr>
+        <td>Доллар</td>
+        <td>1 {{ valute_code }}</td>
+        <td>=</td>
+        <td>27.500</td>
+      </tr>
+      <tr>
+        <td>Доллар</td>
+        <td>1 {{ valute_code }}</td>
+        <td>=</td>
+        <td>27.500</td>
+      </tr>
+      <tr>
+        <td>Доллар</td>
+        <td>1 {{ valute_code }}</td>
+        <td>=</td>
+        <td>27.500</td>
+      </tr>
+      <tr>
+        <td>Доллар</td>
+        <td>1 {{ valute_code }}</td>
+        <td>=</td>
+        <td>27.500</td>
+      </tr>
+    </table>
+{% endblock %}

@@ -11,17 +11,17 @@
 
   <div class="sidebar left-panel">
     <div class="handwritten">Выбор валют</div>
-    <button class="button">Рубль</button>
-    <button class="button">Доллар США</button>
-    <button class="button">Китайский юань</button>
+    <a href="/valute/GBP" class="button">Фунт стерлингов</a>
+    <a href="/valute/USD" class="button">Доллар США</a>
+    <a href="/valute/BRL" class="button">Бразильский реал</a>
   </div>
 
   <div class="sidebar right-panel">
     <div class="top-bar">
-      <a href="/blog">Важные новости</a>
-      <a href="/current-exchange-rate">Актуальный курс</a>
-      <a href="/exchange-rate">Архив</a>
-      <a href="/faq">FAQ</a>
+      {% block contents_menu %}
+        <a href="/blog">Важные новости</a>
+        <a href="/faq">FAQ</a>
+      {% endblock %}
     </div>
     <div class="middle-panel">
       <!-- Панель -->
@@ -34,6 +34,13 @@
   <div class="footer">
     © 2021 Компания Инк. | <a href="/about_site">О сайте</a> | <a href="/about_company">О компании</a> | <a href="#">Контакты</a>
   </div>
+
+  <script>
+    function changeCurrency(сhar_сode) {
+      // Выполните здесь любую логику, которую вы хотите применить к выбранной валюте
+      console.log("Выбранная валюта: " + сhar_сode);
+    }
+  </script>
 
 </body>
 </html>

@@ -20,13 +20,16 @@ def color_view(request, color):
     return HttpResponse(f"Выбран цвет: {color}")
 
 
+def valute_view(request, valute_code):
+    return render(request, 'valutes/valute.html', {'valute_code': valute_code})
+
 def get_exchange_rate(request):
     return render(request, 'valutes/exchange_rate_form.html')
 
-def current_exchange_rate(request):
+def current_exchange_rate(request, valute_code):
     response = requests.get('https://www.cbr-xml-daily.ru/daily_json.js')
     data = response.json()
-    rate = data['Valute']['USD']['Value']
+    rate = data['Valute'][valute_code]['Value']
     return render(request, 'valutes/current_exchange_rate.html', {'rate': rate})
 
 def archive_year(request, year):
@@ -41,7 +44,7 @@ def archive_year(request, year):
         # Обработка случая с некорректным годом
         return HttpResponse(f'Ошибка: {e}', status=400)
 
-def get_exchange_rate(request):
+def get_exchange_rate(request, valute_code):
     if request.method == 'GET':
         return render(request, 'valutes/exchange_rate_form.html')
 
@@ -50,6 +53,10 @@ def get_exchange_rate(request):
         url = f'https://www.cbr.ru/scripts/XML_daily.asp?date_req={date}'
 
         response = requests.get(url)
+
+        if response.status_code != 200:
+            return HttpResponse('Ошибка получения данных с сайта Центрального Банка России')
+
         if response.status_code == 200:
             soup = BeautifulSoup(response.content, 'html.parser')
             valute_list = soup.find_all('valute')
@@ -60,8 +67,12 @@ def get_exchange_rate(request):
                 rate = valute.find('value').text
                 exchange_rates[name] = rate
 
-            return render(request, 'valutes/exchange_rate_result.html', {'exchange_rates': exchange_rates})
-        else:
-            return HttpResponse('Ошибка получения данных с сайта Центрального Банка России')
+            # Найдем курс для конкретной валюты
+            specific_exchange_rate = exchange_rates.get(valute_code)
+
+            if specific_exchange_rate == None:
+                return HttpResponse('На данную дату нет данных в базе')
+
+            return render(request, 'valutes/exchange_rate_result.html', {'specific_exchange_rate': specific_exchange_rate, 'date': date })
 
 handler404 = 'valutes.views.custom_404',
