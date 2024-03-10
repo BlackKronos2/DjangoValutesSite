@@ -2,10 +2,10 @@
 
 {% block title %}Главная страница{% endblock %}
 
-
 {% block contents_menu %}
     <a href="/blog">Важные новости</a>
     <a href="/current-exchange-rate/{{ valute_code }}/">Актуальный курс</a>
+    <a href="/currency-chart/{{ valute_code }}/">Курс за последний месяц</a>
     <a href="/exchange-rate/{{ valute_code }}/">Архив</a>
 {% endblock %}
 
@@ -13,10 +13,10 @@
 
     <!-- Панель с элементами курса -->
     <div class="currency-panel" style="margin-bottom: 20px;">
-        <input type="text" value="1">
+        <input type="number" id="inputMultiplier" value="1" onchange="updateValue()">
         <span>{{ valute_code }}</span>
         <span>=</span>
-        <input type="text" value="27.500" readonly>
+        <input type="text" id="calculatedValue" value="{{ value }}" readonly>
         <span> руб.</span>
     </div>
 
@@ -53,4 +53,20 @@
         <td>27.500</td>
       </tr>
     </table>
+
+    <script>
+        function updateValue() {
+            var inputMultiplier = document.getElementById('inputMultiplier').value;
+            var calculatedValue = inputMultiplier * {{ value }};
+            document.getElementById('calculatedValue').value = calculatedValue;
+        }
+
+        // Запрет ввода нецифровых символов
+        var inputs = document.querySelectorAll('input[type="number"]');
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/, '');
+            });
+        }
+    </script>
 {% endblock %}

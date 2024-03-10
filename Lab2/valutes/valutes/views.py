@@ -5,7 +5,11 @@ import requests
 from bs4 import BeautifulSoup
 from django.shortcuts import render
 from django.http import HttpResponse
+from datetime import datetime, timedelta
+import xml.etree.ElementTree as ET
+import logging
 
+handler404 = 'valutes.views.custom_404',
 
 def page_from_name(request, file_name):
     return render(request, file_name + '.html', {})
@@ -21,7 +25,8 @@ def color_view(request, color):
 
 
 def valute_view(request, valute_code):
-    return render(request, 'valutes/valute.html', {'valute_code': valute_code})
+    valute_data = parse_currency_data(valute_code)
+    return render(request, 'valutes/valute.html', {'valute_code': valute_code, 'value':valute_data["Value"], 'valute_name':valute_data["Name"]})
 
 def get_exchange_rate(request):
     return render(request, 'valutes/exchange_rate_form.html')
@@ -30,7 +35,7 @@ def current_exchange_rate(request, valute_code):
     response = requests.get('https://www.cbr-xml-daily.ru/daily_json.js')
     data = response.json()
     rate = data['Valute'][valute_code]['Value']
-    return render(request, 'valutes/current_exchange_rate.html', {'rate': rate, 'valute_code':valute_code})
+    return render(request, 'valutes/current_exchange_rate.html', {'rate':rate, 'valute_code':valute_code})
 
 def archive_year(request, year):
     try:
@@ -43,6 +48,20 @@ def archive_year(request, year):
     except ValueError as e:
         # Обработка случая с некорректным годом
         return HttpResponse(f'Ошибка: {e}', status=400)
+
+def parse_currency_data(valute_code):
+    base_url = 'https://www.cbr-xml-daily.ru/daily_json.js'
+
+    response = requests.get(base_url)
+    if response.status_code == 200:
+        data = response.json()
+        if valute_code in data['Valute']:
+            currency_data = data['Valute'][valute_code]
+            return currency_data
+        else:
+            return None
+    else:
+        return None
 
 def get_exchange_rate(request, valute_code):
     if request.method == 'GET':
@@ -75,4 +94,30 @@ def get_exchange_rate(request, valute_code):
 
             return render(request, 'valutes/exchange_rate_result.html', {'specific_exchange_rate': specific_exchange_rate, 'date': date })
 
-handler404 = 'valutes.views.custom_404',
+def get_currency_rates(request, valute_code):
+    rates = []
+
+    end_date = datetime.now().strftime("%d/%m/%Y")
+    start_date = (datetime.now() - timedelta(days=29)).strftime("%d/%m/%Y")
+
+    valute_data = parse_currency_data(valute_code)
+    url = f"https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1={start_date}&date_req2={end_date}&VAL_NM_RQ={valute_data["ID"]}"
+
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        return HttpResponse('Ошибка получения данных с сайта Центрального Банка России')
+
+    xml_data = response.text
+    root = ET.fromstring(xml_data)
+
+    for record in root.findall('Record'):
+        date_str = record.get('Date')
+        date = datetime.strptime(date_str, '%d.%m.%Y').strftime('%d/%m/%Y')
+        value = float(record.find('Value').text.replace(',', '.'))
+
+        cr_data = {'date': date, 'value': value}
+        rates.append(cr_data)
+
+    return render(request, 'valutes/currency_chart.html', {'rates': rates})
+
