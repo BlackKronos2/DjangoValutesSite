@@ -56,10 +56,12 @@
 
     <script>
         function updateValue() {
-            var inputMultiplier = document.getElementById('inputMultiplier').value;
-            var calculatedValue = inputMultiplier * {{ value }};
-            document.getElementById('calculatedValue').value = calculatedValue;
+            var multiplier = parseFloat(document.getElementById("inputMultiplier").value);
+            var value = parseFloat("{{ value }}");
+            var result = (multiplier * value).toFixed(2);
+            document.getElementById("calculatedValue").value = result;
         }
+
 
         // Запрет ввода нецифровых символов
         var inputs = document.querySelectorAll('input[type="number"]');

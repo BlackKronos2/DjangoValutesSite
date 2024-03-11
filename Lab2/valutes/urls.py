@@ -14,6 +14,8 @@ urlpatterns = [
     path('color/<str:color>/', views.color_view),
     path('404/', lambda request: HttpResponseNotFound('Страница не найдена - Ошибка адреса')),
 
+    path('valutes/convert_currency/', views.convert_currency, name='convert_currency'),
+
     path('archive/<year:year>/', views.archive_year),
     path('exchange-rate/<str:valute_code>/', views.get_exchange_rate, name='exchange_rate_form'),
     path('current-exchange-rate/<str:valute_code>/', views.current_exchange_rate, name='current_exchange_rate'),

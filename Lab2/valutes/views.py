@@ -8,6 +8,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from datetime import datetime, timedelta
 import xml.etree.ElementTree as ET
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
 import logging
 
 handler404 = 'valutes.views.custom_404',
@@ -31,6 +33,13 @@ def valute_view(request, valute_code):
 
 def get_exchange_rate(request):
     return render(request, 'exchange_rate_form.html')
+
+@require_GET  # Указываем, что представление должно обрабатывать только GET-запросы
+def convert_currency(request):
+    value = float(request.GET.get('value', 0))
+    multiplier = float(request.GET.get('multiplier', 1))
+    calculated_value = round(value * multiplier, 2)
+    return JsonResponse({'calculated_value': calculated_value})
 
 def current_exchange_rate(request, valute_code):
     response = requests.get('https://www.cbr-xml-daily.ru/daily_json.js')

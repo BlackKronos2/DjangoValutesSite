@@ -1,10 +1,22 @@
 {% extends "index_base.html" %}
+{% load custom_tags %}
 
 {% block title %}Новости{% endblock %}
 
 {% block content %}
   <div class="middle-panel">
-    <!-- Панель поиска -->
-        <h1>Тут будут новости !</h1>
+    <!-- Панели новостей -->
+    <div class="news-container" style="overflow: auto; max-height: 400px;">
+      {% with dates="2022-01-01, 2022-01-02, 2022-01-03, 2022-01-04, 2022-01-05" %}
+        {% for i in "12345" %}
+          {% with current_date=dates|add:""|slice:"11:21" %}
+          <div class="news-panel" style="margin-bottom: 10px; padding: 10px; border: 1px solid #ccc;">
+            <h2>Новость {{ i }} - {{ current_date|custom_date_format }}</h2>
+            <p>Здесь описание новости за {{ current_date }}</p>
+          </div>
+          {% endwith %}
+        {% endfor %}
+      {% endwith %}
+    </div>
   </div>
 {% endblock %}
