@@ -1,8 +1,9 @@
 {% extends "index_base.html" %}
+{% load custom_valutes_tags %}
 
 {% block title %}Главная страница{% endblock %}
 
 {% block content %}
     <h1>Текущий курс обмена:</h1>
-    <p>1 {{ valute_code }} = {{ rate }} рублей</p>
+    <p>1 {{ valute_code }} = {{ rate|money_format }} </p>
 {% endblock %}
