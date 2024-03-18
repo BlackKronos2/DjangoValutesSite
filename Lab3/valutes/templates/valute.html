@@ -1,0 +1,75 @@
+{% extends "index_base.html" %}
+{% load custom_valutes_tags %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block contents_menu %}
+    <a href="/blog">Важные новости</a>
+    <a href="/valutes/current-exchange-rate/{{ valute_code }}/">Актуальный курс</a>
+    <a href="/valutes/currency-chart/{{ valute_code }}/">Курс за последний месяц</a>
+    <a href="/valutes/exchange-rate/{{ valute_code }}/">Архив</a>
+{% endblock %}
+
+{% block content %}
+
+    <!-- Панель с элементами курса -->
+    <div class="currency-panel" style="margin-bottom: 20px;">
+        <input type="number" id="inputMultiplier" value="1" onchange="updateValue()">
+        <span>{{ valute_code }}</span>
+        <span>=</span>
+        <input type="text" id="calculatedValue" value="{{ value }}" readonly>
+        <span> руб.</span>
+    </div>
+
+    <!-- Таблица внутри средней панели -->
+    <table style="margin-top: 20px;">
+      <tr>
+        <th>Валюта</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      <tr>
+        <td>Доллар</td>
+        <td>1 {{ valute_code }}</td>
+        <td>=</td>
+        <td>27.500</td>
+      </tr>
+      <tr>
+        <td>Доллар</td>
+        <td>1 {{ valute_code }}</td>
+        <td>=</td>
+        <td>27.500</td>
+      </tr>
+      <tr>
+        <td>Доллар</td>
+        <td>1 {{ valute_code }}</td>
+        <td>=</td>
+        <td>27.500</td>
+      </tr>
+      <tr>
+        <td>Доллар</td>
+        <td>1 {{ valute_code }}</td>
+        <td>=</td>
+        <td>27.500</td>
+      </tr>
+    </table>
+
+    <script>
+        function updateValue() {
+            var multiplier = parseFloat(document.getElementById("inputMultiplier").value);
+            var value = parseFloat("{{ value }}");
+            var result = (multiplier * value).toFixed(2);
+            document.getElementById("calculatedValue").value = result;
+        }
+
+
+        // Запрет ввода нецифровых символов
+        var inputs = document.querySelectorAll('input[type="number"]');
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/, '');
+            });
+        }
+    </script>
+{% endblock %}
