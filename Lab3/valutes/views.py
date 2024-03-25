@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.views.generic.base import TemplateView
 import requests
@@ -12,27 +12,56 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 import logging
 
+from valutes.models import Currency
+
 handler404 = 'valutes.views.custom_404',
 
 def page_from_name(request, file_name):
-    return render(request, file_name + '.html', {})
+    currencies = Currency.objects.get_currencies
+    return render(request, file_name + '.html', {'currencies': currencies})
 
 
 def custom_404(request, exception):
     return redirect('404.html')
 
 
-def color_view(request, color):
-    # Обработка значения цвета
-    return HttpResponse(f"Выбран цвет: {color}")
+def parse_rate(valute_code):
+    response = requests.get('https://www.cbr-xml-daily.ru/daily_json.js')
+    rate = response.json()['Valute'][valute_code]['Value']
+    return rate
 
+def parse_rates(valutes_codes):
+    response = requests.get('https://www.cbr-xml-daily.ru/daily_json.js')
+    data = response.json()
+    rates = {}
 
-def valute_view(request, valute_code):
-    valute_data = parse_currency_data(valute_code)
-    return render(request, 'valute.html', {'valute_code': valute_code, 'value':valute_data["Value"], 'valute_name':valute_data["Name"]})
+    for code in valutes_codes:
+        rates[code] = data['Valute'][code]['Value']
+
+    return rates
+
+def valute_view(request, slug):
+    currency = get_object_or_404(Currency, slug=slug)
+
+    currencies = Currency.objects.get_currencies()
+    currencies_codes = list(currencies.values_list('char_code', flat=True))
+    rates = parse_rates(currencies_codes)
+
+    rate = rates[currency.char_code]
+    rates.pop(currency.char_code)
+
+    for valute_code in rates:
+        new_value = (1 / rate) * rates[valute_code]
+        currency_name = currencies.filter(char_code=valute_code).first().сurrency_name
+        rates[valute_code] = (new_value, currency_name)
+
+    return render(request, 'valute.html', {'valute': currency, 'value' : rate, 'currencies': currencies, 'rates' : rates})
+
 
 def get_exchange_rate(request):
-    return render(request, 'exchange_rate_form.html')
+    currencies = Currency.objects.get_currencies
+    return render(request, 'exchange_rate_form.html', {'currencies': currencies})
+
 
 @require_GET  # Указываем, что представление должно обрабатывать только GET-запросы
 def convert_currency(request):
@@ -42,10 +71,11 @@ def convert_currency(request):
     return JsonResponse({'calculated_value': calculated_value})
 
 def current_exchange_rate(request, valute_code):
+    currencies = Currency.objects.get_currencies
     response = requests.get('https://www.cbr-xml-daily.ru/daily_json.js')
     data = response.json()
     rate = data['Valute'][valute_code]['Value']
-    return render(request, 'current_exchange_rate.html', {'rate':rate, 'valute_code':valute_code})
+    return render(request, 'current_exchange_rate.html', {'rate':rate, 'valute_code':valute_code, 'currencies': currencies})
 
 def archive_year(request, year):
     try:
@@ -59,7 +89,7 @@ def archive_year(request, year):
         # Обработка случая с некорректным годом
         return HttpResponse(f'Ошибка: {e}', status=400)
 
-def parse_currency_data(valute_code):
+def parse_currency_value(valute_code):
     base_url = 'https://www.cbr-xml-daily.ru/daily_json.js'
 
     response = requests.get(base_url)
@@ -102,7 +132,8 @@ def get_exchange_rate(request, valute_code):
             if specific_exchange_rate == None:
                 return HttpResponse('На данную дату нет данных в базе')
 
-            return render(request, 'exchange_rate_result.html', {'specific_exchange_rate': specific_exchange_rate, 'date': date })
+            currencies = Currency.objects.get_currencies
+            return render(request, 'exchange_rate_result.html', {'specific_exchange_rate': specific_exchange_rate, 'date': date, 'currencies': currencies })
 
 def get_currency_rates(request, valute_code):
     rates = []
@@ -110,7 +141,7 @@ def get_currency_rates(request, valute_code):
     end_date = datetime.now().strftime("%d/%m/%Y")
     start_date = (datetime.now() - timedelta(days=29)).strftime("%d/%m/%Y")
 
-    valute_data = parse_currency_data(valute_code)
+    valute_data = parse_currency_value(valute_code)
     url = f"https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1={start_date}&date_req2={end_date}&VAL_NM_RQ={valute_data["ID"]}"
 
     response = requests.get(url)
@@ -129,5 +160,6 @@ def get_currency_rates(request, valute_code):
         cr_data = {'date': date, 'value': value}
         rates.append(cr_data)
 
-    return render(request, 'currency_chart.html', {'rates': rates})
+    currencies = Currency.objects.get_currencies
+    return render(request, 'currency_chart.html', {'rates': rates, 'currencies': currencies})
 

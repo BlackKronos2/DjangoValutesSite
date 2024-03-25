@@ -11,9 +11,9 @@
 
   <div class="sidebar left-panel">
     <div class="handwritten">Выбор валют</div>
-    <a href="/valutes/valute/GBP" class="button">Фунт стерлингов</a>
-    <a href="/valutes/valute/USD" class="button">Доллар США</a>
-    <a href="/valutes/valute/BRL" class="button">Бразильский реал</a>
+    {% for currency in currencies %}
+        <a href="/valutes/valute/{{ currency.char_code }}" class="button">{{ currency }}</a>
+    {% endfor %}
   </div>
 
   <div class="sidebar right-panel">

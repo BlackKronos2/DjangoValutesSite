@@ -10,6 +10,7 @@ class YearConverter:
     def to_url(self, value):
         return '%04d' % value
 
+
 class ColorConverter(converters.StringConverter):
     regex = '[a-fA-F0-9]{6}'
 

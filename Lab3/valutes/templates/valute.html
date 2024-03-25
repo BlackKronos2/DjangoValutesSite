@@ -5,9 +5,9 @@
 
 {% block contents_menu %}
     <a href="/blog">Важные новости</a>
-    <a href="/valutes/current-exchange-rate/{{ valute_code }}/">Актуальный курс</a>
-    <a href="/valutes/currency-chart/{{ valute_code }}/">Курс за последний месяц</a>
-    <a href="/valutes/exchange-rate/{{ valute_code }}/">Архив</a>
+    <a href="/valutes/current-exchange-rate/{{ valute.char_code }}/">Актуальный курс</a>
+    <a href="/valutes/currency-chart/{{ valute.char_code }}/">Курс за последний месяц</a>
+    <a href="/valutes/exchange-rate/{{ valute.char_code }}/">Архив</a>
 {% endblock %}
 
 {% block content %}
@@ -15,10 +15,9 @@
     <!-- Панель с элементами курса -->
     <div class="currency-panel" style="margin-bottom: 20px;">
         <input type="number" id="inputMultiplier" value="1" onchange="updateValue()">
-        <span>{{ valute_code }}</span>
+        <span>{{ valute.char_code }}</span>
         <span>=</span>
-        <input type="text" id="calculatedValue" value="{{ value }}" readonly>
-        <span> руб.</span>
+        <input type="text" id="calculatedValue" value="{{ value|ru_money_format }}" readonly>
     </div>
 
     <!-- Таблица внутри средней панели -->
@@ -28,41 +27,26 @@
         <th></th>
         <th></th>
         <th></th>
+        <th></th>
       </tr>
-      <tr>
-        <td>Доллар</td>
-        <td>1 {{ valute_code }}</td>
-        <td>=</td>
-        <td>27.500</td>
-      </tr>
-      <tr>
-        <td>Доллар</td>
-        <td>1 {{ valute_code }}</td>
-        <td>=</td>
-        <td>27.500</td>
-      </tr>
-      <tr>
-        <td>Доллар</td>
-        <td>1 {{ valute_code }}</td>
-        <td>=</td>
-        <td>27.500</td>
-      </tr>
-      <tr>
-        <td>Доллар</td>
-        <td>1 {{ valute_code }}</td>
-        <td>=</td>
-        <td>27.500</td>
-      </tr>
+        {% for currency_code, exchange_rate in rates.items %}
+            <tr>
+                <td>{{ exchange_rate.1 }}</td>
+                <td>1 {{ currency_code }}</td>
+                <td>=</td>
+                <td>{{ exchange_rate.0|money_format }}</td>
+                <td>{{ valute.char_code }}</td>
+            </tr>
+        {% endfor %}
     </table>
 
     <script>
         function updateValue() {
             var multiplier = parseFloat(document.getElementById("inputMultiplier").value);
-            var value = parseFloat("{{ value }}");
-            var result = (multiplier * value).toFixed(2);
+            var value = parseFloat("{{ value|ru_money_format }}");
+            var result = (multiplier * value); // результат будет дробным числом
             document.getElementById("calculatedValue").value = result;
         }
-
 
         // Запрет ввода нецифровых символов
         var inputs = document.querySelectorAll('input[type="number"]');
